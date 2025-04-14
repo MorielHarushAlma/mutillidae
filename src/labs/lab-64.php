@@ -69,29 +69,46 @@
             <button type="submit">Fetch</button>
         </form>
 
-        <?php
-        if (isset($_GET['url']) && filter_var($_GET['url'], FILTER_VALIDATE_URL)) {
-            echo "<div class='response-box'><strong>Response from: " . htmlspecialchars($_GET['url']) . "</strong><br><br>";
-            $url = $_GET['url'];
+<?php
+if (isset($_GET['url']) && filter_var($_GET['url'], FILTER_VALIDATE_URL)) {
+    $url = $_GET['url'];
 
-            $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-            $response = curl_exec($ch);
+    echo "<div class='response-box'><strong>Response from: " . htmlspecialchars($url) . "</strong><br><br>";
 
-            if (curl_errno($ch)) {
-                echo "Error: " . curl_error($ch);
-            } else {
-                echo htmlspecialchars($response);
-            }
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 
-            curl_close($ch);
-            echo "</div>";
-        } elseif (isset($_GET['url'])) {
-            echo "<p style='color: red;'>❌ Invalid URL</p>";
-        }
-        ?>
+    // נזהה אם מדובר בכתובת metadata של Google
+    $headers = [];
+
+    if (
+        strpos($url, '169.254.169.254') !== false ||
+        strpos($url, 'metadata.google.internal') !== false
+    ) {
+        $headers[] = 'Metadata-Flavor: Google';
+    }
+
+    // אם צריך, נוסיף את ההדרים
+    if (!empty($headers)) {
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    }
+
+    // ביצוע הבקשה
+    $response = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        echo "Curl error: " . curl_error($ch);
+    } else {
+        echo "<pre>" . htmlspecialchars($response) . "</pre>";
+    }
+
+    curl_close($ch);
+    echo "</div>";
+}
+?>
+
     </div>
 </body>
 </html>
