@@ -662,6 +662,7 @@
     			('labs/lab-61.php', 128, 1),
     			('labs/lab-62.php', 129, 1),
     			('labs/lab-63.php', 130, 1),
+				('labs/lab-64.php', 131, 1),
     			('login.php', 1, 1),
     			('login.php', 10, 2),
     			('login.php', 53, 2),

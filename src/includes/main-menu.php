@@ -6,6 +6,21 @@
 ?>
 
 <div id="smoothmenu1" class="ddsmoothmenu">
+<ul>
+    <li>
+        <a href="#">OWASP 2021</a>
+        <ul>
+            <li>
+                <a href="#">A10 - Server-Side Request Forgery (SSRF)</a>
+                <ul>
+                    <li>
+                        <a href="/labs/lab-64.php">SSRF - Fetch URL</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
 	<ul>
 		<li>
 			<a href="">OWASP 2017</a>
